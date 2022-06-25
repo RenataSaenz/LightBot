@@ -22,7 +22,6 @@ public class LightManager : MonoBehaviour
         Yellow,
         Grey
     }
-    
 }
 
 [System.Serializable]
@@ -39,6 +38,6 @@ public class LightArea
     
    // [Header("Ball Material")]
     public Material ballMaterial;
-
+    
 }
 

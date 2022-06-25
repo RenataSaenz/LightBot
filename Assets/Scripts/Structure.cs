@@ -61,8 +61,10 @@ public class Structure : MonoBehaviour, IColored
         _defaultColor = LightManager.MyLight.Grey;
     }
 
-    public void Color(LightManager.MyLight color)
+    public void Color(LightArea colorBase)
     {
+        var color = colorBase.lightType;
+            
         if (_defaultColor == color) return;
         
         if (_defaultColor == LightManager.MyLight.Grey) 
@@ -70,7 +72,6 @@ public class Structure : MonoBehaviour, IColored
             switch (color)
             {
                 case LightManager.MyLight.Green:
-                    Debug.Log("enteoG");
                     gameObject.GetComponent<MeshRenderer>().material = _green;
                     _defaultColor = LightManager.MyLight.Green;
                     break;

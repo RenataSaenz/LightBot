@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public LightManager.MyLight _defaultColor;
+    public LightArea _defaultColor;
     
     [Header("Colors")]
     [SerializeField] private Material _green;
@@ -23,25 +24,25 @@ public class Player : MonoBehaviour
     {
         if (d == _green)
         {
-            _defaultColor = LightManager.MyLight.Green;
+            _defaultColor.lightType = LightManager.MyLight.Green;
             return;
         }
 
         if (d == _purple)
         {
-            _defaultColor = LightManager.MyLight.Purple;
+            _defaultColor.lightType = LightManager.MyLight.Purple;
             return;
         }
 
         if (d == _white)
         {
-            _defaultColor = LightManager.MyLight.White;
+            _defaultColor.lightType = LightManager.MyLight.White;
             return;
         }
 
         if (d == _yellow)
         {
-            _defaultColor = LightManager.MyLight.Yellow;
+            _defaultColor.lightType = LightManager.MyLight.Yellow;
            // return;
         }
         //
@@ -70,20 +71,21 @@ public class Player : MonoBehaviour
         {
             case LightManager.MyLight.Green:
                 GetComponent<MeshRenderer>().material = _green;
-                _defaultColor = LightManager.MyLight.Green;
+                _defaultColor.lightType = LightManager.MyLight.Green;
                 break;
             case LightManager.MyLight.Purple:
                 GetComponent<MeshRenderer>().material = _purple;
-                _defaultColor = LightManager.MyLight.Purple;
+                _defaultColor.lightType = LightManager.MyLight.Purple;
                 break;
             case LightManager.MyLight.White:
                 GetComponent<MeshRenderer>().material = _white;
-                _defaultColor = LightManager.MyLight.White;
+                _defaultColor.lightType = LightManager.MyLight.White;
                 break;
             case LightManager.MyLight.Yellow:
                 GetComponent<MeshRenderer>().material = _yellow;
-                _defaultColor = LightManager.MyLight.Yellow;
+                _defaultColor.lightType = LightManager.MyLight.Yellow;
                 break;
         }
     }
+
 }

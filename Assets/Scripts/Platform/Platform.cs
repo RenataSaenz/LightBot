@@ -57,11 +57,9 @@ public class Platform : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(this.gameObject.ToString());
         Player player = other.gameObject.GetComponent<Player>();
         if (player != null)
         {
-            Debug.Log(this.gameObject.ToString() + " detected col");
             player.transform.parent = gameObject.transform;
         }
     }
@@ -71,7 +69,6 @@ public class Platform : MonoBehaviour
         Player player = other.gameObject.GetComponent<Player>();
         if (player != null)
         {
-            Debug.Log(this.gameObject.ToString() + " EXIT detected col");
             player.transform.parent = null;
         }
         

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IColored
 {
-   void Color(LightManager.MyLight col);
+   void Color(LightArea col);
 }
