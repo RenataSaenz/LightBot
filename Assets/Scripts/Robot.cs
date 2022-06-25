@@ -23,10 +23,11 @@ public class Robot : MonoBehaviour, IColored
         Died();
     }
 
-    public void Color(LightManager.MyLight col)
+    public void Color(LightArea colorData)
     {
+        var color = colorData.lightType;
         if (gameObject.GetComponent<MeshRenderer>().sharedMaterial == _robotColor) return;
-        if (_defaultColor == col) gameObject.GetComponent<MeshRenderer>().material = _robotColor;
+        if (_defaultColor == color) gameObject.GetComponent<MeshRenderer>().material = _robotColor;
         ConversationManager.Instance.StartConversation(myConversation);
        // GameManager.instance.WonRobot(col);
         

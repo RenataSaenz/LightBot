@@ -69,8 +69,8 @@ public class SavePoint : MonoBehaviour, IColored
             return;
         }
     }
-    public void Color(LightManager.MyLight color)
-    {
+    public void Color(LightArea colorData)
+    {  var color = colorData.lightType;
         if (_defaultColor != LightManager.MyLight.Grey)
         {
             if(!_isNotSaveSpot) GameManager.instance.savePoint = this;

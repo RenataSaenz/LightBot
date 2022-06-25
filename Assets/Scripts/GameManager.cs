@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Linq;
 using DialogueEditor;
 //using UnityEngine.UI;
 
@@ -24,7 +25,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _warningOff;
     private int _counter;
     private int _counter2;
-   
+
+ 
 
     private void Awake()
     {
@@ -33,6 +35,10 @@ public class GameManager : MonoBehaviour
       
         Time.timeScale = 1;
     }
+    
+
+
+    
 
     private void Start()
     {
@@ -101,6 +107,8 @@ public class GameManager : MonoBehaviour
 
     public void LevelCompleted()
     {
+        HudManager.Instance._dataCanvas.SetActive(true);
+        HudManager.Instance.UpdateData();
         _levelCompletedPanel.SetActive(true);
         Time.timeScale = 0;
     }
