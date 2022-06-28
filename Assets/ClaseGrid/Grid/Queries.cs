@@ -11,7 +11,9 @@ public class Queries : MonoBehaviour
     [SerializeField] private Material _purple;
     [SerializeField] private Material _yellow;
     [SerializeField] private Material _white;
-    public LightArea _defaultColor;
+    [SerializeField] private LightArea _activeLightArea;
+    [SerializeField] private LightArea _nonActiveLightArea;
+    
     public bool isBox;
     public float radius = 20f;
     public SpatialGrid targetGrid;
@@ -28,10 +30,10 @@ public class Queries : MonoBehaviour
         Vector3 dir = _waypoints[_currentWaypoint].position - transform.position;
         dir.y = 0;
         transform.forward = dir;
-        transform.forward *= _speed * Time.deltaTime;
-        if (Vector3.Distance(transform.position, _waypoints[_currentWaypoint].position) <= 0.15f)
+        transform.position += transform.forward * _speed * Time.deltaTime;
+        if (Vector3.Distance(transform.position, _waypoints[_currentWaypoint].position) <= 0.05f)
         {
-            if (_currentWaypoint < _waypoints.Count)
+            if (_currentWaypoint < _waypoints.Count() - 1)
             {
                 _currentWaypoint++;
             }
@@ -95,52 +97,54 @@ public class Queries : MonoBehaviour
                 var str = item.GetComponent<Structure>();
                 if (str != null)
                 {
-                    str.ResetToGrey();
+                    //str.Color(_nonActiveLightArea);
                 }
             }
             foreach (var item in selected)
             {
                 item.onGrid = true;
                 var str = item.GetComponent<Structure>();
-                if (str == null) return;
-                str.Color(_defaultColor);
+                if (str != null)
+                {
+                    //str.Color(_activeLightArea);
+                }
             }
 
         }
     }
 
-    void GetType(Material d)
-    {
-        if (d == _green)
-        {
-            _defaultColor.lightType = LightManager.MyLight.Green;
-            return;
-        }
-
-        if (d == _purple)
-        {
-            _defaultColor.lightType = LightManager.MyLight.Purple;
-            return;
-        }
-
-        if (d == _white)
-        {
-            _defaultColor.lightType = LightManager.MyLight.White;
-            return;
-        }
-
-        if (d == _yellow)
-        {
-            _defaultColor.lightType = LightManager.MyLight.Yellow;
-            // return;
-        }
-        //
-        // if (d == _grey)
-        // {
-        //     _defaultColor = LightManager.MyLight.Grey;
-        //     return;
-        // }
-    }
+    // void GetType(Material d)
+    // {
+    //     if (d == _green)
+    //     {
+    //         _defaultColor.lightType = LightManager.MyLight.Green;
+    //         return;
+    //     }
+    //
+    //     if (d == _purple)
+    //     {
+    //         _defaultColor.lightType = LightManager.MyLight.Purple;
+    //         return;
+    //     }
+    //
+    //     if (d == _white)
+    //     {
+    //         _defaultColor.lightType = LightManager.MyLight.White;
+    //         return;
+    //     }
+    //
+    //     if (d == _yellow)
+    //     {
+    //         _defaultColor.lightType = LightManager.MyLight.Yellow;
+    //         // return;
+    //     }
+    //     //
+    //     // if (d == _grey)
+    //     // {
+    //     //     _defaultColor = LightManager.MyLight.Grey;
+    //     //     return;
+    //     // }
+    // }
     
     private void OnGUI()
     {
