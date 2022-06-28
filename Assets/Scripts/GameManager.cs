@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetPosition()
     {
+        Debug.Log("Reset");
         player.transform.position = savePoint.transform.position;
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
