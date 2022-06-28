@@ -1,16 +1,46 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
 public class Queries : MonoBehaviour
 {
+    [Header("Colors")]
+    [SerializeField] private Material _green;
+    [SerializeField] private Material _purple;
+    [SerializeField] private Material _yellow;
+    [SerializeField] private Material _white;
+    public LightArea _defaultColor;
     public bool isBox;
     public float radius = 20f;
     public SpatialGrid targetGrid;
     public float width = 15f;
     public float height = 30f;
     public IEnumerable<GridEntity> selected = new List<GridEntity>();
+
+    [SerializeField] private List<Transform> _waypoints;
+    [SerializeField] private int _currentWaypoint;
+    [SerializeField] private float _speed;
+
+    private void Update()
+    {
+        Vector3 dir = _waypoints[_currentWaypoint].position - transform.position;
+        dir.y = 0;
+        transform.forward = dir;
+        transform.forward *= _speed * Time.deltaTime;
+        if (Vector3.Distance(transform.position, _waypoints[_currentWaypoint].position) <= 0.15f)
+        {
+            if (_currentWaypoint < _waypoints.Count)
+            {
+                _currentWaypoint++;
+            }
+            else
+            {
+                _currentWaypoint = 0;
+            }
+        }
+    }
 
     public IEnumerable<GridEntity> Query()
     {
@@ -62,16 +92,56 @@ public class Queries : MonoBehaviour
             foreach (var item in temp)
             {
                 item.onGrid = false;
+                var str = item.GetComponent<Structure>();
+                if (str != null)
+                {
+                    str.ResetToGrey();
+                }
             }
             foreach (var item in selected)
             {
                 item.onGrid = true;
+                var str = item.GetComponent<Structure>();
+                if (str == null) return;
+                str.Color(_defaultColor);
             }
 
         }
     }
 
+    void GetType(Material d)
+    {
+        if (d == _green)
+        {
+            _defaultColor.lightType = LightManager.MyLight.Green;
+            return;
+        }
 
+        if (d == _purple)
+        {
+            _defaultColor.lightType = LightManager.MyLight.Purple;
+            return;
+        }
+
+        if (d == _white)
+        {
+            _defaultColor.lightType = LightManager.MyLight.White;
+            return;
+        }
+
+        if (d == _yellow)
+        {
+            _defaultColor.lightType = LightManager.MyLight.Yellow;
+            // return;
+        }
+        //
+        // if (d == _grey)
+        // {
+        //     _defaultColor = LightManager.MyLight.Grey;
+        //     return;
+        // }
+    }
+    
     private void OnGUI()
     {
         GUI.Label( new Rect(0,0,20,20), "HOLA");
