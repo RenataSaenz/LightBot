@@ -90,8 +90,7 @@ public class Structure : MonoBehaviour, IColored
             }
             return;
         }
-
-        // if (_defaultColor != LightManager.MyLight.Grey && _defaultColor != color) 
+       // if (_defaultColor != LightManager.MyLight.Grey && _defaultColor != color) 
             GameManager.instance.ResetPosition();
     }
 }
