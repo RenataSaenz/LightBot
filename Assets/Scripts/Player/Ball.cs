@@ -18,7 +18,7 @@ using UnityEngine;
         }
 
 
-        public void Move(Vector3 moveDirection, bool jump)
+        public void Move(Vector3 moveDirection)
         {
             if (m_UseTorque)
             {
@@ -29,12 +29,18 @@ using UnityEngine;
                 m_Rigidbody.AddForce(moveDirection*m_MovePower);
             }
             
-            if (this == null) return;
+            //if (this == null) return;
 
-            if (Physics.Raycast(transform.position, -Vector3.up, k_GroundRayLength, 9) && jump)
+           
+        }
+
+        public void Jump()
+        {
+            if (Physics.Raycast(transform.position, -Vector3.up, k_GroundRayLength, 9)/* && jump*/)
             {
                 m_Rigidbody.AddForce(Vector3.up * m_JumpPower, ForceMode.Impulse);
             }
         }
     }
+
 
