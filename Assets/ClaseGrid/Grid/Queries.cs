@@ -97,7 +97,7 @@ public class Queries : MonoBehaviour
                 var str = item.GetComponent<Structure>();
                 if (str != null)
                 {
-                    //str.Color(_nonActiveLightArea);
+                    str.LightChangeColor(_nonActiveLightArea);
                 }
             }
             foreach (var item in selected)
@@ -106,7 +106,7 @@ public class Queries : MonoBehaviour
                 var str = item.GetComponent<Structure>();
                 if (str != null)
                 {
-                    //str.Color(_activeLightArea);
+                    str.LightChangeColor(_activeLightArea);
                 }
             }
 

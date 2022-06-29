@@ -94,4 +94,30 @@ public class Structure : MonoBehaviour, IColored
         // if (_defaultColor != LightManager.MyLight.Grey && _defaultColor != color) 
             GameManager.instance.ResetPosition();
     }
+    public void LightChangeColor(LightArea colorBase)
+    {
+        var color = colorBase.lightType;
+            
+        if (_defaultColor == color) return;
+        
+        switch (color)
+        {
+            case LightManager.MyLight.Green:
+                gameObject.GetComponent<MeshRenderer>().material = _green;
+                _defaultColor = LightManager.MyLight.Green;
+                break;
+            case LightManager.MyLight.Purple:
+                gameObject.GetComponent<MeshRenderer>().material = _purple;
+                _defaultColor = LightManager.MyLight.Purple;
+                break;
+            case LightManager.MyLight.White:
+                gameObject.GetComponent<MeshRenderer>().material = _white;
+                _defaultColor = LightManager.MyLight.White;
+                break;
+            case LightManager.MyLight.Yellow:
+                gameObject.GetComponent<MeshRenderer>().material = _yellow;
+                _defaultColor = LightManager.MyLight.Yellow;
+                break;
+        }
+    }
 }
