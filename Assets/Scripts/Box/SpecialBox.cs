@@ -12,13 +12,14 @@ public class SpecialBox: MonoBehaviour
 
     private void Start()
     {
+        BoxManager.Instance.collectableObjects.specialBoxes.Add(this);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         collected = true;
         gameObject.SetActive(false);
-        //BoxManager.Instance.objectsCollected[0].specialBoxes.Add(this);
+        
     }
     
 }

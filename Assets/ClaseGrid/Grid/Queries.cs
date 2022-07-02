@@ -7,10 +7,10 @@ using System.Linq;
 public class Queries : MonoBehaviour
 {
     [Header("Colors")]
-    [SerializeField] private Material _green;
-    [SerializeField] private Material _purple;
-    [SerializeField] private Material _yellow;
-    [SerializeField] private Material _white;
+    // [SerializeField] private Material _green;
+    // [SerializeField] private Material _purple;
+    // [SerializeField] private Material _yellow;
+    // [SerializeField] private Material _white;
     [SerializeField] private LightArea _activeLightArea;
     [SerializeField] private LightArea _nonActiveLightArea;
     
@@ -93,7 +93,7 @@ public class Queries : MonoBehaviour
             var temp = FindObjectsOfType<GridEntity>().Where(x=>!selected.Contains(x));
             foreach (var item in temp)
             {
-                item.onGrid = false;
+                //item.onGrid = false;
                 var str = item.GetComponent<Structure>();
                 if (str != null)
                 {
@@ -102,7 +102,7 @@ public class Queries : MonoBehaviour
             }
             foreach (var item in selected)
             {
-                item.onGrid = true;
+             //   item.onGrid = true;
                 var str = item.GetComponent<Structure>();
                 if (str != null)
                 {

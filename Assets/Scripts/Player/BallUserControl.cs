@@ -4,14 +4,10 @@ using UnityStandardAssets.CrossPlatformInput;
 using IA2;
 
     public class BallUserControl : MonoBehaviour
-    {
-        
+    { 
         public enum PlayerInputs { MOVE, JUMP, IDLE, DIE}
         private EventFSM<PlayerInputs> _myFsm;
-      //  private Rigidbody _myRb;
-      //  public Renderer _myRen;
 
-        
         private Ball ball; 
 
         private Vector3 move;
@@ -21,7 +17,6 @@ using IA2;
         private bool jump;
         private float h;
         private float v;
-
 
         private void Awake()
         {
@@ -69,7 +64,6 @@ using IA2;
 
             idle.OnEnter += x =>
             {
-                Debug.Log("Rama estas tarde");
             };
             
             idle.OnUpdate += () => 
@@ -86,7 +80,6 @@ using IA2;
             //MOVING
             moving.OnEnter += x =>
             {
-              //  _myRen.material.color = Color.blue;
             };
             moving.OnUpdate += () => 
             {
@@ -113,16 +106,11 @@ using IA2;
             };
             moving.OnExit += x => 
             {
-                //x es el input que recibí, por lo que puedo modificar el comportamiento según a donde estoy llendo
-               // if(x != PlayerInputs.JUMP)
-                 //   _myRb.velocity = Vector3.zero;
             };
             
             //JUMPING
             jumping.OnEnter += x => 
             {
-              //  jump = CrossPlatformInputManager.GetButton("Jump");
-                Debug.Log("jumping");
                 ball.Jump();
             };
             jumping.OnUpdate += () =>
@@ -157,10 +145,7 @@ using IA2;
         
         private void FixedUpdate()
         {
-            // ball.Move(move, jump);
             _myFsm.FixedUpdate();
-            //jump = false;
-            Debug.Log(jump);
         }
     }
 
