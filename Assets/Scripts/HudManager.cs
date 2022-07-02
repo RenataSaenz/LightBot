@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
+using UnityEngine.UI;
 
 public class HudManager : MonoBehaviour
 {
@@ -13,10 +15,17 @@ public class HudManager : MonoBehaviour
     
     public TMP_Text _data;
     public GameObject _dataCanvas;
+
+    [SerializeField] private PieChart _pieChart;
+
+    [SerializeField] private Image _colorImage;
+    
     private void Awake()
     {
         if (Instance == null) Instance = this;
         _dataCanvas.SetActive(false);
+        _pieChart.gameObject.SetActive(false);
+        _colorImage.gameObject.SetActive(false);
     }
     public void AddBoxToHud(int p)
     {
@@ -30,7 +39,7 @@ public class HudManager : MonoBehaviour
         {
             _dataCanvas.SetActive(true);
             UpdateData();
-            Time.timeScale = 0;
+           //Time.timeScale = 0;
             
             if (BoxManager.Instance.BoxAchievement(10))
             {
@@ -40,13 +49,65 @@ public class HudManager : MonoBehaviour
             {
                 Debug.Log("achievement not completed");
             }
+
+            ShowAllColorsCollected();
+            
         }
         else if (Input.GetKeyUp(KeyCode.Tab))
         {
             _dataCanvas.SetActive(false);
-            Time.timeScale = 1;
+            _pieChart.gameObject.SetActive(false);
+            _colorImage.gameObject.SetActive(false);
+            //Time.timeScale = 1;
         }
         
+    }
+    public void ShowAllColorsCollected()
+    {
+        _pieChart.gameObject.SetActive(true);
+        _colorImage.gameObject.SetActive(true);
+        var colors = BoxManager.Instance.GetAllColorsCollected().OrderBy(o => o.ToString());
+        
+        var green = colors.SkipWhile(x => x!= LightManager.MyLight.Green).TakeWhile(x => x == LightManager.MyLight.Green).Count();
+        var purple = colors.SkipWhile(x => x!= LightManager.MyLight.Purple).TakeWhile(x => x == LightManager.MyLight.Purple).Count();
+        var yellow = colors.SkipWhile(x => x!= LightManager.MyLight.Yellow).TakeWhile(x => x == LightManager.MyLight.Yellow).Count();
+         
+        List<float> values = new List<float>();
+
+        values.Add(green);
+        values.Add(purple);
+        values.Add(yellow);
+
+        _pieChart.SetValues(values);
+        
+        StartCoroutine(TimeSlicerCoroutine(colors, 0.5f));
+    }
+    
+    IEnumerator TimeSlicerCoroutine(IEnumerable<LightManager.MyLight> list, float timeQuota) 
+    {
+        var wait = new WaitForSeconds(timeQuota);
+        foreach(var elem in list) 
+        {
+            Debug.Log(elem);
+            switch (elem)
+            {
+                case LightManager.MyLight.Green:
+                    _colorImage.color = Color.green;
+                    break;
+                case LightManager.MyLight.Purple:
+                    _colorImage.color = Color.magenta;
+                    break;
+                case LightManager.MyLight.White:
+                    _colorImage.color = Color.white;
+                    break;
+                case LightManager.MyLight.Yellow:
+                    _colorImage.color = Color.yellow;
+                    break;
+            }
+            yield return wait;
+            _colorImage.color = Color.clear;
+            yield return wait;
+        }
     }
 
     public void UpdateData()
