@@ -39,7 +39,7 @@ public class HudManager : MonoBehaviour
         {
             _dataCanvas.SetActive(true);
             UpdateData();
-           //Time.timeScale = 0;
+           Time.timeScale = 0;
             
             if (BoxManager.Instance.BoxAchievement(10))
             {
@@ -58,7 +58,7 @@ public class HudManager : MonoBehaviour
             _dataCanvas.SetActive(false);
             _pieChart.gameObject.SetActive(false);
             _colorImage.gameObject.SetActive(false);
-            //Time.timeScale = 1;
+            Time.timeScale = 1;
         }
         
     }
@@ -80,12 +80,12 @@ public class HudManager : MonoBehaviour
 
         _pieChart.SetValues(values);
         
-        StartCoroutine(TimeSlicerCoroutine(colors, 0.5f));
+        StartCoroutine(TimeSlicerCoroutine(colors, 0.35f));
     }
     
     IEnumerator TimeSlicerCoroutine(IEnumerable<LightManager.MyLight> list, float timeQuota) 
     {
-        var wait = new WaitForSeconds(timeQuota);
+        var wait = new WaitForSecondsRealtime(timeQuota);
         foreach(var elem in list) 
         {
             Debug.Log(elem);
