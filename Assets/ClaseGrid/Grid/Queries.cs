@@ -4,13 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+//IA2-P1
 public class Queries : MonoBehaviour
 {
     [Header("Colors")]
-    // [SerializeField] private Material _green;
-    // [SerializeField] private Material _purple;
-    // [SerializeField] private Material _yellow;
-    // [SerializeField] private Material _white;
     [SerializeField] private LightArea _activeLightArea;
     [SerializeField] private LightArea _nonActiveLightArea;
     
@@ -50,9 +47,7 @@ public class Queries : MonoBehaviour
         {
             var h = height * 0.5f;
             var w = width * 0.5f;
-            //posicion inicial --> esquina superior izquierda de la "caja"
-            //posición final --> esquina inferior derecha de la "caja"
-            //como funcion para filtrar le damos una que siempre devuelve true, para que no filtre nada.
+            
             return targetGrid.Query(
                 transform.position + new Vector3(-w, 0, -h),
                 transform.position + new Vector3(w, 0, h),
@@ -60,7 +55,7 @@ public class Queries : MonoBehaviour
         }
         else
         {
-            //creo una "caja" con las dimensiones deseadas, y luego filtro segun distancia para formar el círculo
+            
             return targetGrid.Query(
                 transform.position + new Vector3(-radius, 0, -radius),
                 transform.position + new Vector3(radius, 0, radius),
@@ -77,7 +72,6 @@ public class Queries : MonoBehaviour
         if (targetGrid == null)
             return;
 
-        //Flatten the sphere we're going to draw
         Gizmos.color = Color.cyan;
         if (isBox)
             Gizmos.DrawWireCube(transform.position, new Vector3(width, 0, height));
@@ -113,39 +107,6 @@ public class Queries : MonoBehaviour
         }
     }
 
-    // void GetType(Material d)
-    // {
-    //     if (d == _green)
-    //     {
-    //         _defaultColor.lightType = LightManager.MyLight.Green;
-    //         return;
-    //     }
-    //
-    //     if (d == _purple)
-    //     {
-    //         _defaultColor.lightType = LightManager.MyLight.Purple;
-    //         return;
-    //     }
-    //
-    //     if (d == _white)
-    //     {
-    //         _defaultColor.lightType = LightManager.MyLight.White;
-    //         return;
-    //     }
-    //
-    //     if (d == _yellow)
-    //     {
-    //         _defaultColor.lightType = LightManager.MyLight.Yellow;
-    //         // return;
-    //     }
-    //     //
-    //     // if (d == _grey)
-    //     // {
-    //     //     _defaultColor = LightManager.MyLight.Grey;
-    //     //     return;
-    //     // }
-    // }
-    
     private void OnGUI()
     {
         GUI.Label( new Rect(0,0,20,20), "HOLA");
