@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] float _endSpace;
     public GameObject player;
+    BallUserControl playerControl;
     [NonSerialized]public SavePoint savePoint;
     public static GameManager instance;
 
@@ -25,20 +26,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _warningOff;
     private int _counter;
     private int _counter2;
-
- 
-
+    
     private void Awake()
     {
         if (instance == null)
             instance = this;
       
         Time.timeScale = 1;
+        playerControl = player.GetComponent<BallUserControl>();
     }
-    
-
-
-    
 
     private void Start()
     {
@@ -71,8 +67,8 @@ public class GameManager : MonoBehaviour
 
     public void ResetPosition()
     {
-        Debug.Log("Reset");
         player.transform.position = savePoint.transform.position;
+        playerControl.RestartState();
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         if (_greenSpotsArea.Contains(savePoint))ResetColorFloor();
@@ -86,26 +82,6 @@ public class GameManager : MonoBehaviour
         }
         
     }
-    //
-    // public void WonRobot(LightManager.MyLight col)
-    // {
-    //     if (col == LightManager.MyLight.Yellow)
-    //     {
-    //         _yellowRobot.SetActive(true);
-    //         return;
-    //     }
-    //     if (col == LightManager.MyLight.Green)
-    //     {
-    //         //_greenRobot.SetActive(true);
-    //         return;
-    //     }
-    //     if (col == LightManager.MyLight.Purple)
-    //     {
-    //         _purpleRobot.SetActive(true);
-    //         return;
-    //     }
-    // }
-
     public void LevelCompleted()
     {
         HudManager.Instance._dataCanvas.SetActive(true);
