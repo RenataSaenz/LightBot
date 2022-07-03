@@ -15,7 +15,6 @@ public class LightBox: MonoBehaviour
 
     private void Start()
     {
-       // BoxManager.Instance._lightBox.Add(this);
         BoxManager.Instance.collectableObjects.AddLightBox(this);
         _renderer = gameObject.GetComponent<Renderer>();
     }
@@ -25,6 +24,8 @@ public class LightBox: MonoBehaviour
         var playerColor = other.gameObject.GetComponent<Player>()._defaultColor.lightType;
         
         if (playerColor == null) return;
+        
+        SoundManager.instance.Play(SoundManager.Types.Item);
         
         if (red)
         {

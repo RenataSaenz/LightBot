@@ -8,62 +8,41 @@ using System.Linq;
 //IA2-P1
 public class BoxManager : MonoBehaviour
 {
-    //public List<CollectableObjects> objectsCollected = new List<CollectableObjects>();  //new list depending if collected in yelow, white, grey, purple, etc
-    public CollectableObjects collectableObjects;  //new list depending if collected in yelow, white, grey, purple, etc
+     public CollectableObjects collectableObjects;
 
     public static BoxManager Instance;
     private void Awake()
     {
         if (Instance == null) Instance = this;
-        //objectsCollected.Add(new CollectableObjects());
     }
 
-    public int TotalPointsInAllGame()
+    public int CountTotalRedBoxes()
     {
-        return default;
+        var boxes = collectableObjects.lightBoxes.
+            Count(x =>  x.red);
+        return boxes;
     }
-    public int TotalBoxInAllGame()
-    {
-        return default;
-    }
-    public int SpecialPoints()
-    {
-        return default;
-    }
-    // public int CountTotalPointsByColor(LightManager.MyLight lightType)
-    // {
-    //     var points = objectsCollected.Select(x => x.lightBoxes).
-    //         Where(x =>  x.typeOfLight == lightType).
-    //         Select(x => x.points).
-    //         Aggregate(0, (acum, current) => acum + current);
-    //     return points;
-    // }
-    
     public int CountTotalPointsByColor(LightManager.MyLight lightType)
     {
         var points = collectableObjects.lightBoxes.
              Where(x =>  x.typeOfLight == lightType).
              Select(x => x.points).
              Aggregate(0, (acum, current) => acum + current);
-        return points;
-    }
+        
+        var robots = collectableObjects.robots.
+            Where(x =>  x.typeOfLight == lightType).
+            Select(x => x.points).
+            Aggregate(0, (acum, current) => acum + current);
 
-    public int CountTotalPointsCollectedByColor(LightManager.MyLight lightType)
-    {
-        var points = collectableObjects.lightBoxes.
-                        Where(x =>  x.typeOfLight == lightType && x.collected).
-                        Select(x => x.points).
-                        Aggregate(0, (acum, current) => acum + current);
-        return points;
+        var total = points + robots;
+        return total;
     }
-    
     public int CountTotalBoxesByColor(LightManager.MyLight lightType)
     {
         var boxes = collectableObjects.lightBoxes.
                         Count(x =>  x.typeOfLight == lightType);
         return boxes;
     }
-    
     public int CountTotalBoxesCollectedByColor(LightManager.MyLight lightType)
     {
         var  boxes = collectableObjects.lightBoxes.
@@ -71,16 +50,32 @@ public class BoxManager : MonoBehaviour
                         Count(x => x.collected);
         return boxes;
     }
-
-    public int CountTotalPointsCollected()
+    public IEnumerable<LightManager.MyLight> GetAllColorsCollected()
     {
-        var points = collectableObjects.lightBoxes.
-                        Where(x => x.collected).
-                        Select(x => x.points).
-                        Aggregate(0, (acum, current) => acum + current);
-        return points;
+        var lightB = collectableObjects.lightBoxes.Where(x => !x.red && x.collected).Select(x => x.typeOfLight);
+        var specialB = collectableObjects.robots.Where(x => x.collected).Select(x => x.typeOfLight);
+        var colors = lightB.Concat(specialB);
+        return colors;
     }
-    
+    public IEnumerable<int> GetAllPointsCollectedByColor(LightManager.MyLight lightType)
+    {
+        var points = collectableObjects.lightBoxes
+            .Where(x => x.typeOfLight == lightType && x.collected)
+            .Select(x => x.points);
+        
+        var robots = collectableObjects.robots
+            .Where(x => x.typeOfLight == lightType && x.collected)
+            .Select(x => x.points);
+
+        var total = points.Concat(robots);
+        return total;
+    }
+    public int CountTotalBoxes()
+    {
+        var boxes = collectableObjects.lightBoxes.
+            Count();
+        return boxes;
+    }
     public bool BoxAchievement(int minute)
     {
         int boxes = collectableObjects.lightBoxes.
@@ -91,54 +86,28 @@ public class BoxManager : MonoBehaviour
         
         return false;
     }
-    
-    public int CountTotalPoints()
-    {
-        var points = collectableObjects.lightBoxes.
-                        Select(x => x.points).
-                        Aggregate(0, (acum, current) => acum + current);
-        return points;
-    }
 
-    public int CountTotalRedBoxes()
+    public IEnumerable<string> GetTimeRobots()
     {
-        var boxes = collectableObjects.lightBoxes.
-            Count(x =>  x.red);
-        return boxes;
-    }
-    
-    
-    public int CountTotalBoxesCollected()
-    {
-        var boxes = collectableObjects.lightBoxes.
-                        Where(x =>  !x.red).
-                        Count(x => x.collected);
-        return boxes;
+        var robots = collectableObjects.robots
+            .Where(x => x.collected)
+            .Select(x => x.name);
+        var time = collectableObjects.robots
+            .Where(x => x.collected)
+            .Select(x => x.timeCollected);
+
+        var robotAndTime = robots.Zip(time, (a, b) => a + " Collected " + b);
+
+        return robotAndTime;
     }
     
-    public int CountTotalBoxes()
+    public IEnumerable<BotsNames> GetRobots()
     {
-        var boxes = collectableObjects.lightBoxes.
-            Count();
-        return boxes;
-    }
+        var robots = collectableObjects.robots
+            .Where(x => x.collected).Select(x => x.name);
 
-    public int CountTotalSpecialBoxes()
-    {
-        var boxes = collectableObjects.specialBoxes.
-            Count();
-        return boxes;
+        return robots;
     }
-
-    public IEnumerable<LightManager.MyLight> GetAllColorsCollected()
-    {
-        var lightB = collectableObjects.lightBoxes.Where(x => !x.red && x.collected).Select(x => x.typeOfLight);
-        var specialB = collectableObjects.specialBoxes.Where(x => x.collected).Select(x => x.typeOfLight);
-        var colors = lightB.Concat(specialB);
-        return colors;
-    }
-
-   
     
 }   
 
@@ -146,11 +115,11 @@ public class BoxManager : MonoBehaviour
 public class CollectableObjects
 {
     public List<LightBox> lightBoxes = new List<LightBox>();
-    public List<SpecialBox> specialBoxes = new List<SpecialBox>();
+    public List<RescueRobot> robots = new List<RescueRobot>();
 
-    public void AddSpecialBox(SpecialBox box)
+    public void AddRobot(RescueRobot box)
     {
-        specialBoxes.Add(box);
+        robots.Add(box);
     }
 
     public void AddLightBox(LightBox box)

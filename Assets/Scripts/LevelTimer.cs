@@ -7,6 +7,7 @@ using TMPro;
 public class LevelTimer : MonoBehaviour
 {
     public static int minutes;
+    public static string time;
     void Update()
     {
  
@@ -21,8 +22,9 @@ public class LevelTimer : MonoBehaviour
         t /= 60;
         int hours = (int)(t % 24); 
         
+        time = "Time: " + string.Format("{0}:{1}:{2}.{3}", hours.ToString("00"), minutes.ToString("00"), seconds.ToString("00"), milliseconds.ToString("00"));
 
-        HudManager.Instance._timer.text = "Time: " + string.Format("{0}:{1}:{2}.{3}", hours.ToString("00"), minutes.ToString("00"), seconds.ToString("00"), milliseconds.ToString("00"));
+      //  HudManager.Instance._timer.text = "Time: " + string.Format("{0}:{1}:{2}.{3}", hours.ToString("00"), minutes.ToString("00"), seconds.ToString("00"), milliseconds.ToString("00"));
     }
 
 }

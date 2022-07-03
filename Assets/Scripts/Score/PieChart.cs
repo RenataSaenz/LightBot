@@ -7,11 +7,13 @@ using UnityEngine.UI;
 public class PieChart : MonoBehaviour
 {
     [SerializeField] private Image[] imagesPieChart;
-    float totalAmount = 0;
+    
+    
 
     public void SetValues(List<float> valuesToSet)
     {
         float totalValues = 0;
+        
         for (int i = 0; i < imagesPieChart.Length; i++)
         {
             totalValues += FindPercentage(valuesToSet,i);
@@ -21,6 +23,8 @@ public class PieChart : MonoBehaviour
 
     private float FindPercentage(List<float> valueToSet, int index)
     {
+        float totalAmount = 0;
+        
         for (int i = 0; i < valueToSet.Count; i++)
         {
             totalAmount += valueToSet[i];

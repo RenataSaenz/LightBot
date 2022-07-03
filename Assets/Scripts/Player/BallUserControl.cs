@@ -3,9 +3,10 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using IA2;
 
+//IA2-P1
     public class BallUserControl : MonoBehaviour
     { 
-        public enum PlayerInputs { MOVE, JUMP, IDLE, DIE}
+        public enum PlayerInputs { MOVE, JUMP, IDLE, Restart}
         private EventFSM<PlayerInputs> _myFsm;
 
         private Ball ball; 
@@ -36,37 +37,55 @@ using IA2;
             var idle = new State<PlayerInputs>("IDLE");
             var moving = new State<PlayerInputs>("Moving");
             var jumping = new State<PlayerInputs>("Jumping");
-            var die = new State<PlayerInputs>("DIE");
+            var restart = new State<PlayerInputs>("DIE");
             
             //creo las transiciones
             StateConfigurer.Create(idle)
                 .SetTransition(PlayerInputs.MOVE, moving)
                 .SetTransition(PlayerInputs.JUMP, jumping)
-                .SetTransition(PlayerInputs.DIE, die)
+                .SetTransition(PlayerInputs.Restart, restart)
                 .Done(); //aplico y asigno
 
             StateConfigurer.Create(moving)
                 .SetTransition(PlayerInputs.IDLE, idle)
                 .SetTransition(PlayerInputs.JUMP, jumping)
-                .SetTransition(PlayerInputs.DIE, die)
+                .SetTransition(PlayerInputs.Restart, restart)
                 .Done();
 
             StateConfigurer.Create(jumping)
                 .SetTransition(PlayerInputs.IDLE, idle)
                 .SetTransition(PlayerInputs.MOVE, moving)
                 .SetTransition(PlayerInputs.JUMP, jumping)
-                .SetTransition(PlayerInputs.DIE, die)
+                .SetTransition(PlayerInputs.Restart, restart)
                 .Done();
-
-            //die no va a tener ninguna transición HACIA nada (uno puede morirse, pero no puede pasar de morirse a caminar)
-            //entonces solo lo creo e inmediatamente lo aplico asi el diccionario de transiciones no es nulo y no se rompe nada.
-            StateConfigurer.Create(die).Done();
+            
+            StateConfigurer.Create(restart)
+                .SetTransition(PlayerInputs.IDLE, idle)
+                .SetTransition(PlayerInputs.MOVE, moving)
+                .SetTransition(PlayerInputs.JUMP, jumping)
+                .Done();
 
             idle.OnEnter += x =>
             {
             };
             
             idle.OnUpdate += () => 
+            {
+                
+                if (h != 0 || v != 0)
+                    SendInputToFSM(PlayerInputs.MOVE);
+                
+                
+                if (jump)
+                    SendInputToFSM(PlayerInputs.JUMP);
+            };
+            
+            restart.OnEnter += x =>
+            {
+                SoundManager.instance.Play(SoundManager.Types.Restart);
+            };
+            
+            restart.OnUpdate += () => 
             {
                 
                 if (h != 0 || v != 0)
@@ -128,6 +147,11 @@ using IA2;
         {
             SendInputToFSM(PlayerInputs.IDLE);
         }
+
+        public void RestartState()
+        {
+            SendInputToFSM(PlayerInputs.Restart);
+        }
         
         private void SendInputToFSM(PlayerInputs inp)
         {
@@ -142,7 +166,7 @@ using IA2;
             _myFsm.Update();
 
         }
-        
+
         private void FixedUpdate()
         {
             _myFsm.FixedUpdate();
