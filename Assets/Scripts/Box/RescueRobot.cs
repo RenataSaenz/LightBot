@@ -14,7 +14,7 @@ public class RescueRobot: MonoBehaviour
 
     private void Start()
     {
-        BoxManager.Instance.collectableObjects.AddRobot(this);
+        ScoreManager.Instance.collectableObjects.AddRobot(this);
     }
 
     private void OnTriggerEnter(Collider other)

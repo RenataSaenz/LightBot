@@ -15,7 +15,7 @@ public class LightBox: MonoBehaviour
 
     private void Start()
     {
-        BoxManager.Instance.collectableObjects.AddLightBox(this);
+        ScoreManager.Instance.collectableObjects.AddLightBox(this);
         _renderer = gameObject.GetComponent<Renderer>();
     }
     

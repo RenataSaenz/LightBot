@@ -41,7 +41,7 @@ public class SceneTransitions : MonoBehaviour
     public void PlayLevel1()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene("Level1_IA");
     } 
     public void PlayLevel2()
     {

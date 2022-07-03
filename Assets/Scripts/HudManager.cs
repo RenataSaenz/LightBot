@@ -59,7 +59,7 @@ public class HudManager : MonoBehaviour
             _dataCanvas.SetActive(true);
             Time.timeScale = 0;
             
-            if (BoxManager.Instance.BoxAchievement(10))
+            if (ScoreManager.Instance.BoxAchievement(10))
             {
                 Debug.Log("achievement completed");
             }
@@ -70,8 +70,8 @@ public class HudManager : MonoBehaviour
 
             ShowAllColorsCollected();
 
-            List<BotsNames> botsCollected = new List<BotsNames>(BoxManager.Instance.GetRobots().ToList());
-            List<string> botsData = new List<string>(BoxManager.Instance.GetTimeRobots().ToList());
+            List<BotsNames> botsCollected = new List<BotsNames>(ScoreManager.Instance.GetRobots().ToList());
+            List<string> botsData = new List<string>(ScoreManager.Instance.GetTimeRobots().ToList());
 
             for (int i = 0; i < botsCollected.Count; i++)
             {
@@ -105,7 +105,7 @@ public class HudManager : MonoBehaviour
     {
         _pieChart.gameObject.SetActive(true);
         _colorImage.gameObject.SetActive(true);
-        var colors = BoxManager.Instance.GetAllColorsCollected().OrderBy(o => o.ToString());
+        var colors = ScoreManager.Instance.GetAllColorsCollected().OrderBy(o => o.ToString());
         
         var green = colors.SkipWhile(x => x!= LightManager.MyLight.Green).TakeWhile(x => x == LightManager.MyLight.Green).Count();
         var purple = colors.SkipWhile(x => x!= LightManager.MyLight.Purple).TakeWhile(x => x == LightManager.MyLight.Purple).Count();
@@ -125,9 +125,9 @@ public class HudManager : MonoBehaviour
     
     IEnumerator TimeSlicerCoroutine(IEnumerable<LightManager.MyLight> list, float timeQuota)
     {
-        List<int> totalYellowPointsCollected = new List<int>(BoxManager.Instance.GetAllPointsCollectedByColor(LightManager.MyLight.Yellow));
-        List<int> totalGreenPointsCollected = new List<int>(BoxManager.Instance.GetAllPointsCollectedByColor(LightManager.MyLight.Green));
-        List<int> totalPurplePointsCollected = new List<int>(BoxManager.Instance.GetAllPointsCollectedByColor(LightManager.MyLight.Purple));
+        List<int> totalYellowPointsCollected = new List<int>(ScoreManager.Instance.GetAllPointsCollectedByColor(LightManager.MyLight.Yellow));
+        List<int> totalGreenPointsCollected = new List<int>(ScoreManager.Instance.GetAllPointsCollectedByColor(LightManager.MyLight.Green));
+        List<int> totalPurplePointsCollected = new List<int>(ScoreManager.Instance.GetAllPointsCollectedByColor(LightManager.MyLight.Purple));
         
         
         int yellowCounter = 0;
@@ -184,30 +184,30 @@ public class HudManager : MonoBehaviour
     {
         _yellowData.text = "Yellow Total Points: " +
                            _yellowPointsCollected + "/" +
-                           BoxManager.Instance.CountTotalPointsByColor(LightManager.MyLight.Yellow) +
+                           ScoreManager.Instance.CountTotalPointsByColor(LightManager.MyLight.Yellow) +
                            Environment.NewLine +
                            "Yellow LightBoxes Collected: " +
-                           BoxManager.Instance.CountTotalBoxesCollectedByColor(LightManager.MyLight.Yellow) + "/" +
-                           BoxManager.Instance.CountTotalBoxesByColor(LightManager.MyLight.Yellow);
+                           ScoreManager.Instance.CountTotalBoxesCollectedByColor(LightManager.MyLight.Yellow) + "/" +
+                           ScoreManager.Instance.CountTotalBoxesByColor(LightManager.MyLight.Yellow);
 
         _greenData.text = "Green Total Points: " +
                           _greenPointsCollected + "/" +
-                          BoxManager.Instance.CountTotalPointsByColor(LightManager.MyLight.Green) +
+                          ScoreManager.Instance.CountTotalPointsByColor(LightManager.MyLight.Green) +
                           Environment.NewLine +
                           "Green LightBoxes Collected: " +
-                          BoxManager.Instance.CountTotalBoxesCollectedByColor(LightManager.MyLight.Green) + "/" +
-                          BoxManager.Instance.CountTotalBoxesByColor(LightManager.MyLight.Green);
+                          ScoreManager.Instance.CountTotalBoxesCollectedByColor(LightManager.MyLight.Green) + "/" +
+                          ScoreManager.Instance.CountTotalBoxesByColor(LightManager.MyLight.Green);
 
         _purpleData.text = "Purple Total Points: " +
                            _purplePointsCollected + "/" +
-                           BoxManager.Instance.CountTotalPointsByColor(LightManager.MyLight.Purple) +
+                           ScoreManager.Instance.CountTotalPointsByColor(LightManager.MyLight.Purple) +
                            Environment.NewLine +
                            "Purple LightBoxes Collected: " +
-                           BoxManager.Instance.CountTotalBoxesCollectedByColor(LightManager.MyLight.Purple) + "/" +
-                           BoxManager.Instance.CountTotalBoxesByColor(LightManager.MyLight.Purple);
+                           ScoreManager.Instance.CountTotalBoxesCollectedByColor(LightManager.MyLight.Purple) + "/" +
+                           ScoreManager.Instance.CountTotalBoxesByColor(LightManager.MyLight.Purple);
         
         _redData.text = "Red Total Boxes Collected: " +
-                        BoxManager.Instance.CountTotalRedBoxes();
+                        ScoreManager.Instance.CountTotalRedBoxes();
 
     }
     
